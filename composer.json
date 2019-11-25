@@ -1,0 +1,27 @@
+{
+    "name": "ansien/simple-job-queue-bundle",
+    "description": "Simple background jobs for your Symfony application without RabbitMQ or other external dependencies.",
+    "keywords": ["job","queue", "background", "cron", "scheduled"],
+    "version": "1.0.0",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "homepage": "https://andries.io",
+    "authors": [
+        {
+            "name": "ansien",
+            "email": "ansienb1@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Ansien\\SimpleJobQueueBundle\\": ""
+        }
+    },
+    "require": {
+        "php": ">=7.3.0"
+    },
+    "require-dev": {
+        "phpro/grumphp": "^0.16.2",
+        "friendsofphp/php-cs-fixer": "^2.16"
+    }
+}

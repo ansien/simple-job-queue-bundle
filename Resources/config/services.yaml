@@ -1,0 +1,20 @@
+services:
+
+  simple_job_queue_bundle.run_command:
+    class: Ansien\SimpleJobQueueBundle\Command\RunCommand
+    tags: ['console.command']
+    arguments:
+      ['@doctrine.orm.default_entity_manager', '@simple_job_queue_bundle.job_repository', '@kernel']
+
+  simple_job_queue_bundle.job_repository:
+    class: Ansien\SimpleJobQueueBundle\Repository\JobRepository
+    arguments:
+      ['@doctrine']
+
+  simple_job_queue_bundle.simple_job_service:
+    class: Ansien\SimpleJobQueueBundle\Service\SimpleJobService
+    arguments:
+      ['@doctrine.orm.default_entity_manager']
+
+  Ansien\SimpleJobQueueBundle\Service\SimpleJobService: "@simple_job_queue_bundle.simple_job_service"
+
