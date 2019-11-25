@@ -18,7 +18,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 class RunCommand extends Command
 {
-    protected static $defaultName = 'simple:job-queue:run';
+    protected static $defaultName = 'simple-job-queue:run';
 
     /**
      * @var EntityManagerInterface

@@ -31,7 +31,7 @@ $this->simpleJobService->createJob('app:test-command', [
 ### Running pending jobs (development environment)
 You can run all pending jobs while developing by using:
 ```bash
-php bin/console simple:job:queue:run
+php bin/console simple-job-queue:run
 ```
 
 ### Running pending jobs (production environment)
