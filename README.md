@@ -19,8 +19,8 @@ composer require ansien/simple-job-queue-bundle
 
 ## Usage
 
-You can inject an instance of `Ansien\SimpleJobQueueBundle\Service\SimpleJobService`. This service allows you to create jobs.
-
+### Creating a job
+You can inject the `Ansien\SimpleJobQueueBundle\Service\SimpleJobService` service. This service allows you to easily create a job. You can also manually create and persist an instance of `Ansien\SimpleJobQueueBundle\Entity\Job`.
 ```php
 $this->simpleJobService->createJob('app:test-command', [
     'foo' => 'bar'
