@@ -16,7 +16,7 @@ You can install the package via composer:
 ```bash
 composer require ansien/simple-job-queue-bundle
 ```
-Make sure to create a migration or run the `php bin/console doctrine:schema:update --force` command to create the `sjqb_jops` table.
+After installation: create a migration or run the `php bin/console doctrine:schema:update --force` command to create the `sjqb_jobs` table.
 
 ## Usage
 
