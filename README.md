@@ -1,4 +1,4 @@
-# Ansien/SimpleJobQueueBundle
+# SimpleJobQueueBundle
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/ansien/simple-job-queue-bundle.svg?style=flat-square)](https://packagist.org/packages/ansien/simple-job-queue-bundle)
 [![MIT Licensed](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
