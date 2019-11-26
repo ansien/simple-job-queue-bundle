@@ -16,6 +16,7 @@ You can install the package via composer:
 ```bash
 composer require ansien/simple-job-queue-bundle
 ```
+Make sure to create a migration or run the `php bin/console doctrine:schema:update --force` command to create the `sjqb_jops` table.
 
 ## Usage
 
@@ -40,7 +41,7 @@ In your production environment it is recommended to use Supervisor which allows 
 Below is an example config which you can use:
 ```bash
 [program:simple_job_queue]
-command=php %kernel.root_dir%/console simple:job-queue:run --env=prod --verbose
+command=php %kernel.root_dir%/console simple-job-queue:run --env=prod --verbose
 process_name=%(program_name)s
 numprocs=1
 directory=/tmp
@@ -50,9 +51,9 @@ startsecs=5
 startretries=10
 user=www-data
 redirect_stderr=false
-stdout_logfile=%capistrano.shared_dir%/simple_job_queue.out.log
+stdout_logfile=/var/log/simple_job_queue.out.log
 stdout_capture_maxbytes=1MB
-stderr_logfile=%capistrano.shared_dir%/simple_job_queue.error.log
+stderr_logfile=/var/log/simple_job_queue.error.log
 stderr_capture_maxbytes=1MB
 ```
 
