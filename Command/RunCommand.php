@@ -15,6 +15,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Lock\LockFactory;
+use Symfony\Component\Lock\Store\FlockStore;
 
 class RunCommand extends Command
 {
@@ -35,6 +37,11 @@ class RunCommand extends Command
      */
     private $kernel;
 
+    /**
+     * @var LockFactory
+     */
+    private $lockFactory;
+
     public function __construct(
         EntityManagerInterface $entityManager,
         JobRepository $jobRepository,
@@ -46,30 +53,46 @@ class RunCommand extends Command
         $this->entityManager = $entityManager;
         $this->jobRepository = $jobRepository;
         $this->kernel = $kernel;
+
+        $store = new FlockStore();
+        $this->lockFactory = new LockFactory($store);
     }
 
     protected function configure()
     {
         $this
-            ->setDescription('Run all jobs currently waiting for execution.');
+            ->setDescription('Execute all runnable jobs.');
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $newJobs = $this->jobRepository->findBy([
-            'state' => Job::STATE_NEW
-        ]);
-
-        foreach ($newJobs as $job) {
-            $this->runJob($job);
+        while (1) {
+            $this->runMainLoop();
+            sleep(5);
         }
 
         return 0;
     }
 
+    private function runMainLoop()
+    {
+        $runnableJobs = $this->jobRepository->getRunnableJobs();
+
+        foreach ($runnableJobs as $job) {
+            $lock = $this->lockFactory->createLock("sjqb-job-{$job->getId()}");
+
+            if ($lock->acquire()) {
+                $this->runJob($job);
+                $lock->release();
+            }
+        }
+    }
+
     private function runJob(Job $job)
     {
+        echo 'Running job: ' . $job->getId();
+
         $job->setState(Job::STATE_RUNNING);
         $this->entityManager->flush();
 

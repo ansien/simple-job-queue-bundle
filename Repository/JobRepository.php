@@ -20,4 +20,16 @@ class JobRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Job::class);
     }
+
+    /**
+     * @return Job[]
+     */
+    public function getRunnableJobs()
+    {
+        return $this->createQueryBuilder('j')
+            ->where('j.state = :newState')
+            ->setParameter('newState', Job::STATE_NEW)
+            ->getQuery()
+            ->getResult();
+    }
 }
