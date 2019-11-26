@@ -74,7 +74,13 @@ class Job
      * @var string
      * @ORM\Column(type="text", nullable=true)
      */
-    private $output;
+    private $bufferedOutput;
+
+    /**
+     * @var string
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $otherOutput;
 
     /**
      * @var DateTime
@@ -125,9 +131,16 @@ class Job
         return $this;
     }
 
-    public function setOutput(string $output): self
+    public function setBufferedOutput(string $bufferedOutput): self
     {
-        $this->output = $output;
+        $this->bufferedOutput = $bufferedOutput;
+
+        return $this;
+    }
+
+    public function setOtherOutput(string $otherOutput): self
+    {
+        $this->otherOutput = $otherOutput;
 
         return $this;
     }

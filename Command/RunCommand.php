@@ -42,6 +42,21 @@ class RunCommand extends Command
      */
     private $lockFactory;
 
+    /**
+     * @var string
+     */
+    private $env;
+
+    /**
+     * @var bool
+     */
+    private $verbose;
+
+    /**
+     * @var OutputInterface
+     */
+    private $output;
+
     public function __construct(
         EntityManagerInterface $entityManager,
         JobRepository $jobRepository,
@@ -67,6 +82,10 @@ class RunCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $this->env = $input->getOption('env');
+        $this->verbose = $input->getOption('verbose');
+        $this->output = $output;
+
         while (1) {
             $this->runMainLoop();
             sleep(5);
@@ -91,36 +110,39 @@ class RunCommand extends Command
 
     private function runJob(Job $job)
     {
-        echo 'Running job: ' . $job->getId();
+        $this->output->writeln("Running job: {$job->getCommand()} (ID: {$job->getId()})");
 
         $job->setState(Job::STATE_RUNNING);
         $this->entityManager->flush();
 
         $application = new Application($this->kernel);
         $application->setAutoExit(false);
+        $application->setCatchExceptions(true);
 
         $input = new ArrayInput(array_merge([
             'command' => $job->getCommand(),
-            '--job-id' => $job->getId()
+            '--job-id' => $job->getId(),
         ], $job->getArgs()));
 
         $output = new BufferedOutput();
 
         try {
+            ob_start();
             $application->run($input, $output);
         } catch (Exception $e) {
-            $this->setJobOutput($job, $e->getMessage(), Job::STATE_FAILED);
+            $this->setJobOutput($job,Job::STATE_FAILED, $e->getMessage(), ob_get_clean());
             return;
         }
 
-        $this->setJobOutput($job, (string) $output->fetch(), Job::STATE_FINISHED);
+        $this->setJobOutput($job,Job::STATE_FINISHED, $output->fetch(), ob_get_clean());
     }
 
-    private function setJobOutput(Job $job, string $output, string $state)
+    private function setJobOutput(Job $job, string $state, string $bufferedOutput, string $otherOutput)
     {
         $job
-            ->setOutput($output)
-            ->setState($state);
+            ->setState($state)
+            ->setBufferedOutput($bufferedOutput)
+            ->setOtherOutput($otherOutput);
 
         $this->entityManager->flush();
     }
