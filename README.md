@@ -1,11 +1,11 @@
+**Warning: This package is abandoned and no longer maintained. Use [schmittjoh/JMSJobQueueBundle](https://github.com/schmittjoh/JMSJobQueueBundle) package instead.**
+
 # SimpleJobQueueBundle
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/ansien/simple-job-queue-bundle.svg?style=flat-square)](https://packagist.org/packages/ansien/simple-job-queue-bundle)
 [![MIT Licensed](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 [![Build Status](https://img.shields.io/travis/ansien/simple-job-queue-bundle/master.svg?style=flat-square)](https://travis-ci.org/ansien/simple-job-queue-bundle)
 [![Total Downloads](https://img.shields.io/packagist/dt/ansien/simple-job-queue-bundle.svg?style=flat-square)](https://packagist.org/packages/ansien/simple-job-queue-bundle)
-
-**Warning: This package is abandoned and no longer maintained. Use [schmittjoh/JMSJobQueueBundle](https://github.com/schmittjoh/JMSJobQueueBundle) package instead.**
 
 The bundle makes it very easy to run background jobs in your Symfony application, without the use of a message queue such as RabbitMQ.
 
